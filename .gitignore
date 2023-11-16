@@ -1,0 +1,7 @@
+*.json
+*.tar
+*.gz
+*.zip
+*.cache
+*.pdf
+/testing/pdf_word_clustering/target
