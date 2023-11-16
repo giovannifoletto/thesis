@@ -13,4 +13,5 @@ Possible sections organisation:
 	- API-based ones
 	- RNN analysis
 - Problems with existing models for anomaly detection (domain-specific, ML-retraining, others...)
+- application of the models in cloud environment, instead only kubernetes
 - 

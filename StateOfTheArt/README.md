@@ -122,3 +122,10 @@ How they do in industrial methods?
 LogDeep => there are a lot of repository
 https://github.com/donglee-afar/logdeep
 https://github.com/nailo2c/deeplog
+
+RESEARCH ONN KUBE MONITORING, LOGGING AND METRICS.
+
+FATIGUE ALERT: https://link.springer.com/chapter/10.1007/978-3-030-36708-4_62
+
+NTMALTRACE: https://github.com/cwkeam/NtMalDetect
+NNI (Neural Netowork Intelligence): https://nni.readthedocs.io/en/stable/

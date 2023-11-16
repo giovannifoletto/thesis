@@ -14,18 +14,18 @@ GREY: questions
 ```
 
 This paper presents a log anomaly detection mechanism heavily based on the precedent paper ([[DeepLog]]). 
-The problem that this research group found in the precedent mechanism is 
+The problem that this research group found in the precedent mechanism is only partially correct, since they approach the problems only from index-based methods, instead the new methods would make some improvements the analysis of log based on quantitative methods and qualitative, instead only with qualitative (like DeepLog has done). That allow, in additional to the normal detection capabilities, a better correlation in logs, and so increase the possibility of identify anomaly.
 
-This model elaborates on templating technologies in order to ingest logs in a more common/supervised method. This approach uses semantics of logs in order to model the log stream as a language sequence, and so elaborate with NLP techniques.
-Another problem this paper would solve is the appearing of new log-template in every learn phase of the algorithm, and so the value of false-positive after this approach are much lower.
-
-The things this paper introduce is the capability of getting sequential and quantitative log anomalies simultaneously. 
 The fact that logs could be grouped in a **sequence** is common and already seen in the [[DeepLog]] paper, using RNN-LSTM is expected for a **sequential log anomaly detector**. The other parameter, the quantitative, it something that in the paper is described as behaviour (if there is a log of a file being opened, there must be one of the file closing at some point, but clearly you can read/write from/to it in that time).
+This methods allow to reduce false-positive since different index could have information that are useful for themselves, and this model allow them to "exchange information".
 
-Another innovation of this paper is the `template2vec`, a templating library that 
+The approach of this methods is parsing logs with **templates** instead of relying only on index. This is useful for the qualitative research they are doing, but it comes handy even during retraining. In fact, applying templates allow different template to be "merged", instead of throwing an alert. That, following the thought of the writers, is a better approach instead of the users-input driven approach explained by [[DeepLog]].
 
+The algorithms works with an hybrid approach, using supervised and unsupervised learning. The unsupervised learning components can detect anomalies in the data without the need of labelled components, while the supervise model allow to mark templates as they arrive.
 
+The authors present a simulation between DeepLog and their implementation:![[Pasted image 20231116135103.png]]
 
+As you can see, the DeepLog implementation is more in time, but (they say) that the LogAnomaly implementation produced $3.5$ less false-positive than DeepLog.
 
 
 

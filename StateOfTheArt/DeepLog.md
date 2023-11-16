@@ -50,8 +50,6 @@ That said, there is a specific attack model that this systems means to identify,
 1. Attacks that lead to systems execution to misbehave and hence produce anomalous patterns in logs. This group collect DoS attacks (the log receiving order or frequency is changed or the response time is intacted), BROP (Blind Return Oriented Programming) and all the attacks that change the way the program works.
 2. All the attacks that could leave trace in systems logs due to the logging activities of the system monitoring services or any external monitoring tool.
 
-
-
 ## How the systems works
 
 ![[Pasted image 20231115180333.png]]
@@ -89,3 +87,8 @@ DATESET: no
 ALGORITHM: explained, but not officially implemented (https://github.com/nailo2c/deeplog).
 
 I think in the "Related Work" section there is more to dig. This is surely the most big papers to read.
+
+Other sources:
+https://github.com/Thijsvanede/DeepLog
+https://github.com/wuyifan18/DeepLog
+https://github.com/Wapiti08/DeepLog
