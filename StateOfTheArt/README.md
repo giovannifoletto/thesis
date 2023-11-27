@@ -85,9 +85,11 @@ The API papers utilise:
 2. a malevolent traffic as a starting point
 
 I think the solution most correct could be the 1st, since how many new attacks could be invented in order to bypass security systems, that the initial attacks dataset do not take in considerations.
+
 There is no means testing about changing the application mid-running the model. How that could influence the labelling system. The solution after are better or worst?
 Usually the model do not react good to attack-pattern changes, so usually the new emerging threat cannot be found if it is not present in the starting dataset.
 Luis sad that to highlight this fact, they used to change the time-flow of the packets: the systems did not recognise the "new" attack. This only small insignificant change disrupt the complete flagging operation.
+
 The problem is presented in every possibility:
 - training on the safe traffic is useful only to understand anomalies, not all implementation uses to log the correct API endpoint being attacked. Whenever the application get updates (that in microservices is a fact, not a when), it must be create traffic to train a new model on.
 - the train on malicious traffic is not useful since it block the possibility of other thread, breaking the concept of the machine learning => rule-base are more efficient in that case.
@@ -105,6 +107,8 @@ Grouping the papers:
 - like the two paper of API are in one
 - the api systems calls analysis is with RNN and api calls.
 
+Some recurrent methods of evasion?
+
 ### Section on Log Anomaly
 
 Starting from the CSCLog paper, we found the precedent. From that we started an analysis about what is added/changed about 
@@ -112,10 +116,12 @@ Starting from the CSCLog paper, we found the precedent. From that we started an 
 Papers:
 - [[DeepLog]], published during 2017
 - [[Loganomaly]], published during 2019
+- [[LogRobust]], release 2019
 - [[LogC]], published during 2020
-- [[OC4Seq]], published during 2021 (# Improving Log-Based Anomaly Detection with Component-Aware Analysis)
+- [[OC4Seq]], published during 2021
 - [[CSCLOG]], published during 2023
 - [[OperResearchChallenges]], published on July, 2023 (Towards Detecting Anomalies in Log-Event Sequences with Deep Learning: Open Research Challenges)
+- [[LogGraph]], release 2023, not yet published
 
 How they do in industrial methods?
 
@@ -129,3 +135,65 @@ FATIGUE ALERT: https://link.springer.com/chapter/10.1007/978-3-030-36708-4_62
 
 NTMALTRACE: https://github.com/cwkeam/NtMalDetect
 NNI (Neural Netowork Intelligence): https://nni.readthedocs.io/en/stable/
+
+# Search in files
+
+
+```bash
+find /path -name '*.pdf' -exec sh -c 'pdftotext "{}" - | grep --with-filename --label="{}" --color "your pattern"' \;
+```
+
+
+## TODO TODAY:
+
+considerations
+SOC read the paper.
+
+# After Meeting
+
+1. Intorduction to Kubernetes, Kubernetes' Audit Logs, Kubernetes Security
+	1. https://kubernetes.io/training/
+	2. https://aws.amazon.com/it/cloudtrail/
+	3. https://blog.aquasec.com/kubernetes-exposed-one-yaml-away-from-disaster
+	4. https://github.com/easttimor/aws-incident-response
+	5. https://www.sumologic.com/blog/kubernetes-logs/
+2. Introduction to Kubernetes/cluster related possible attacks, how they works and how is possible to reproduce
+	1. https://www.linkedin.com/pulse/top-15-common-attacks-kubernetes-vicky-budhiraja/
+	2. The state-of-the-art in container technologies: Application, orchestration and security (PDF: state_art_container_security.pdf)
+	3. KubAnomaly: Anomaly detection for the Dockerorchestration platform with neural network approaches (pdf: kubAnomaly qualcosa .pdf)
+	4. Batch and online anomaly detection for scientific applications in a Kubernetes environment (batch_kube.pdf)
+	5. Outlier Detection in Dynamic Systems with Multiple Operating Points and Application to Imporove Industrial Flares Monitoring (outlier_detection.pdf)
+3. DL/ML and application of RNN-LSTM
+	1. Toward_Explainable_Deep_Neural_Network_Based_Anomaly_Detection.pdf
+	2. Recurrent_Neural_Network_Attention_Mechanisms.pdf
+	3. A Comparative Study of Two Network-based Anomaly Detection Methods
+	4. Learning stochastic differential equations using RNN with log signature features (https://arxiv.org/abs/1908.08286)
+	5. LogBERT: Log Anomaly Detection via BERT
+	6. ADA: Adaptive Deep Log Anomaly Detector
+	7. Network_Log_Anomaly_Detection_Based_on_GRU_and_SVDD.pdf
+	8. Log File Anomaly Detection
+	9. Long Short-Term Memory based Operation Log Anomaly Detection
+	10. LLAD_LifeLog_Anomaly_Detection_Based_on_Recurrent_Neural.pdf
+	11. Leveraging Clustering and Natural Language Processing to Overcome Variety Issues in Log Management
+	12. Deep_Learning_Approaches_for_Intrusion_Detection_System.pdf
+	13. A Real-Time Audit Mechanism Based on the Compression Technique
+	14. Cloud_Security_Auditing_Based_on_Behavioral_Modeling.pdf 
+	15. Based_on_the_user_behavior_characteristic ff_mining_database anomaly_detection_model_design.pdf
+	16. Microservices Monitoring with Event Logs and Black Box Execution Tracing
+	17. Analysing and alerting on application logs within Kubernetes infrastructure
+	18. Log Clustering based Problem Identification for Online Service Systems
+	19. NIPS-2010-robust-pca-via-outlier-pursuit-Paper.pdf
+4. pytorch/tensorflow
+
+https://github.com/autumn0409/Log-based-Anomaly-Detection-System
+
+Papers not found, maybe interesting: 
+1. The Implementation of a Network Log System Using RNN on Cyberattack Detection with Data Visualization (https://link.springer.com/chapter/10.1007/978-981-15-3250-4_38).
+2. Exploiting Event Log Event Attributes in RNN Based Prediction (https://link.springer.com/chapter/10.1007/978-3-030-46633-6_4)
+3. https://www.inderscienceonline.com/doi/epdf/10.1504/IJBPIM.2014.063518
+4. https://link.springer.com/chapter/10.1007/978-3-031-28790-9_2
+5. https://link.springer.com/chapter/10.1007/978-1-4842-5458-5_8
+
+Da leggere 29 papers and a github repo + kubernetes foundation + ML/DL foundation 
++ AdvProg
++ networking 2

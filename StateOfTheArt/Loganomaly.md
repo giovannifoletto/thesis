@@ -29,16 +29,18 @@ As you can see, the DeepLog implementation is more in time, but (they say) that 
 
 
 
-![[Pasted image 20231106112000.png]]
+![[LogAnomaly.png]]
 
 
 # Considerations
 
-PROS:
-CONS:
+The model propose is something like DeepLog, with some improvements. I don't think that the section of supervised learning is a great add, and it's not clear if the goal of less false-positive is correct. Clearly, to obtain what its needed, will be necessary a better correlation, in order to allow different pattern recognition to interact with each other and with the other cloud infrastructure, in order to understand if the operation is an anomaly.
 
-DATESET:
-ALGORITHM:
+PROS: 
+CONS: 
+
+DATESET: 
+ALGORITHM: https://github.com/ljm0022/LogGraph.
 
 
 

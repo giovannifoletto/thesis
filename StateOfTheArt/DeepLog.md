@@ -7,6 +7,7 @@ tags:
   - RNN-LSTM
   - machine-learning-models
   - deep-learning
+paper-release-date: "2017"
 ---
 ```
 YELLOW: interesting for this work
@@ -26,7 +27,7 @@ The authors says that the current environment working leveraging systems data fo
 
 1. [[PCA]] based approaches over logs message counters
 2. Invariant mining based methods to capture co-occurrence patterns between different log keys
-3. workow based methods to identify execution anomalies in program logic flows
+3. workflow based methods to identify execution anomalies in program logic flows
 
 The problems with these solution is that no one is effective as **universally anomaly detection methods**, capable of guarding against different attacks, in particular for a online application.
 
@@ -52,7 +53,7 @@ That said, there is a specific attack model that this systems means to identify,
 
 ## How the systems works
 
-![[Pasted image 20231115180333.png]]
+![[DeepLogImplementation.png]]
 
 The first part the algorithm is about log parser. It is shown that by several previous works that is possible and effective using the "log key" methodology for each log entry. The difference in this application is about the use of some identifiers for understand from which nodes/part of the systems the logs came thought. 
 For example are useful the `block_id` value and the `instance_id` in order to understand from which node their are come.
@@ -61,7 +62,7 @@ As the log parsing method they used the `Spell` library, that (they say) is the 
 The architecture of the systems is shown in the picture above, but mainly is divisible in three phases:
 1. the log key anomaly detection model
 2. the parameter value anomaly detection model
-3. the workow model to diagnose detected anomalies
+3. the workflow model to diagnose detected anomalies
 
 The identification phases is based on two results, based on the parsed log entry. These are key value and parameters value vector. If both these results are detected as anomaly, the alert is emitted.
 
@@ -92,3 +93,5 @@ Other sources:
 https://github.com/Thijsvanede/DeepLog
 https://github.com/wuyifan18/DeepLog
 https://github.com/Wapiti08/DeepLog
+
+LINKS: [[DeepLog]], [[Loganomaly]], [[LogC]], [[OC4Seq]]

@@ -1,0 +1,212 @@
+SherLog: Error Diagnosis by Connecting
+Clues from Run-time Logs
+Ding Yuan
+
+Haohui Mai
+
+Weiwei Xiong
+
+University of Illinois at
+Urbana-Champaign
+dyuan3@cs.uiuc.edu
+
+University of Illinois at
+Urbana-Champaign
+mai4@cs.uiuc.edu
+
+University of Illinois at
+Urbana-Champaign
+wxiong2@cs.uiuc.edu
+
+Lin Tan∗
+
+Yuanyuan Zhou
+
+Shankar Pasupathy
+
+University of Waterloo
+lintan@uwaterloo.ca
+
+University of California, San Diego
+yyzhou@cs.ucsd.edu
+
+NetApp, Inc
+Shankar.Pasupathy@netapp.com
+
+Abstract
+
+1. Introduction
+
+Computer systems often fail due to many factors such as software
+bugs or administrator errors. Diagnosing such production run failures is an important but challenging task since it is difficult to reproduce them in house due to various reasons: (1) unavailability
+of users’ inputs and file content due to privacy concerns; (2) difficulty in building the exact same execution environment; and (3)
+non-determinism of concurrent executions on multi-processors.
+Therefore, programmers often have to diagnose a production
+run failure based on logs collected back from customers and the
+corresponding source code. Such diagnosis requires expert knowledge and is also too time-consuming, tedious to narrow down root
+causes. To address this problem, we propose a tool, called SherLog, that analyzes source code by leveraging information provided
+by run-time logs to infer what must or may have happened during
+the failed production run. It requires neither re-execution of the program nor knowledge on the log’s semantics. It infers both control
+and data value information regarding to the failed execution.
+We evaluate SherLog with 8 representative real world software
+failures (6 software bugs and 2 configuration errors) from 7 applications including 3 servers. Information inferred by SherLog are
+very useful for programmers to diagnose these evaluated failures.
+Our results also show that SherLog can analyze large server applications such as Apache with thousands of logging messages within
+only 40 minutes.
+
+1.1 Motivation
+
+Categories and Subject Descriptors
+ging]: Diagnostics
+General Terms
+Keywords
+
+D.2.5 [Testing and Debug-
+
+Reliability
+
+Log, Failure Diagnostics, Static Analysis
+
+∗ This work was done when she was at UIUC as a graduate student. Currently she is an assistant professor at the University of Waterloo.
+
+Permission to make digital or hard copies of all or part of this work for personal or
+classroom use is granted without fee provided that copies are not made or distributed
+for profit or commercial advantage and that copies bear this notice and the full citation
+on the first page. To copy otherwise, to republish, to post on servers or to redistribute
+to lists, requires prior specific permission and/or a fee.
+ASPLOS’10, March 13–17, 2010, Pittsburgh, Pennsylvania, USA.
+c 2010 ACM 978-1-60558-839-1/10/03. . . $10.00
+Copyright 
+
+Many applications require high reliability and availability [23]. Unfortunately, software failure is a major contributor to system down
+time and security holes. As software systems have grown in size,
+complexity and cost, it has become increasingly difficult to deliver
+bug-free software to end users. As a result, many software failures (including crashes, hangs, incorrect results and other software
+anomalies) occur during production runs.
+Besides software defects, administrator errors are another major cause for system failures because, being human, administrators usually make mistakes when performing configuration related
+tasks. A recent study [29] has shown a significant fraction (48.6%)
+of failures in enterprise networks are caused by mis-configurations.
+When a system fails in production run, regardless of the root
+cause (software bugs, mis-configurations or even hardware faults),
+support engineers and programmers are frequently called upon to
+diagnose and solve the issue within a tight time schedule. Since
+such errors directly impact customers’ business, vendors make diagnosing and fixing them as the highest priority. In order to provide
+timely solutions to users, vendors often devote extensive time and
+human resources, which often results in high supporting cost to
+solve end user’s problems. In addition, it also causes interruption
+on on-going effort to develop new features or products.
+To solve a product-run issue, support engineers1 first need to
+understand what have happened during the failure run in order
+to narrow down the root cause. The best solution to achieve this
+is of course to reproduce the failure in house. Much effort has
+been conducted in system and hardware support for reproducing software failures on uni-processor and multi-processors, including TTVM [30], R2 [24], DMP [17], Kendo [38], FDR [46],
+BugNet [36], VMWare [43] , just to name a few.
+Unfortunately, despite the above applaudable effort in failure reproduction, in reality, many circumstances make such failure reproduction impossible or forbiddingly expensive. First, customers’ privacy concerns can make failure reproduction infeasible. For example, financial companies will not be able to release their databases
+to vendors to troubleshoot a problem. Even an ordinary desktop
+user may feel uncomfortable to send back Microsoft their inputs
+1 Note that most tier-2 or tier-3 support engineers are software engineers
+who have designed and developed the released software.
+
+typed into a browser before a crash. Second, it is hard to have the
+exact same execution environment (including hardware, network,
+third-party application layers, OS or library versions, etc.) as what
+customers have due to resource or license constraints. Third, how
+to provide a low-overhead logging mechanism for failure reproduction on multi-processors is still a challenging open research problem [19, 35, 46].
+In industry, the common practice in case of failure is that customers send vendors logs that are generated by the vendor’s system,
+and such logs are the sole data source (in addition to their source
+code) to troubleshoot the occurred failure. Based on what are in the
+logs and source code, engineers manually infer what may have happened, just like a detective who tries to solve a crime by connecting all seemingly unrelated on-site evidence together. Therefore, to
+resolve a production run failure quickly, it typically requires experienced engineers to manually examine logs collected from customers. In some difficult and urgent cases, customers allow vendors
+to provide a newer instrumented version to collect more detailed
+logs, especially at the suspect code locations after support engineers’ first round of log analysis. Such handshakes usually can iterate a couple of times, but not more because it requires customers’
+close collaboration, and can distract customers away from attending their own core business. Therefore, each iteration of the log
+analysis needs to be effective to quickly zoom into the right root
+cause within only a few round of interaction with customers.
+1.2 A Motivating Example
+Even though human intelligence still greatly exceeds machines’,
+there are a few tasks, especially those dull and tedious ones, that
+machine automation have done excellent jobs in offloading from
+humans. It not only saves time and human cost, but also provides
+better accuracy and more comprehensiveness. Failure diagnosis is
+a such task.
+Let’s consider a real world failure example in rmdir of GNU
+core utilities version 4.5.1. Executing rmdir -p with a directory name ended by slash will mistakenly cause the program to
+fail. When executing rmdir -vp dir1/dir2/, where dir1/ and
+dir1/dir2/ are existing directories, the buggy program only removes dir1/dir2/, without removing dir1/ as it should have.
+The log produced by rmdir contains the following text (we
+number each message for the convenience of our description):
+rmdir: removing directory, dir1/dir2/ [msg 1]
+rmdir: removing directory, dir1/dir2 [msg 2]
+rmdir: ‘dir1/dir2’: No such file or directory [msg 3]
+
+Figure 1 shows the highly simplified code of rmdir.c. If
+the -p option is specified, empty path will be set to 1, causing
+remove parent to be called after removing each argument directory, which will remove all the super directories along the hierarchy. Line 5-24 of remove parent shows the loop that removes all
+the super directories. In each iteration, path moves one level up
+along the directory hierarchy by removing all the characters after
+the last slash of the current directory’s path. The error is triggered
+when initially path ends with a trailing slash, so the first iteration
+will simply remove the last slash, resulting in the same directory
+which has just been removed in line 50 in main. The fix is simply
+to remove all the trailing slashes before entering the loop starting
+at line 5 in remove parents.
+While the root cause may sound simple once known, it was
+a “mystery” the first time this failure is reported and being diagnosed. The only information available is just the log messages. By
+examining the logs and the corresponding source code, an engineer may find that code statements r1, m1 could generate the first 2
+messages, and r2, m2 generate the third message. However, simple
+combinatorics would indicate a total of 8 combination possibilities,
+
+and different combinations would take engineers to different paths
+for narrowing down the root cause.
+However, by conducting a deeper analysis, we can find out
+that six of the eight paths are infeasible because they are selfcontradictory; and only two paths, namely {m1, r1, r2} or {m1,
+m1, m2} are remaining for the next step of follow-up. For example, {r1, r1, r2} would not be feasible because it implies m1 not
+being executed, which requires verbose not being set, contradictory with the constraint for r1 to be executed.
+In addition, to diagnose a failure, engineers often need to know
+more than just log-printing code locations. Specifically, they may
+need to know what code has been executed and in what order,
+i.e., the execution path, as well as values of certain variables. As
+log messages are generally sparsely printed, there may be tens
+of thousands of possible paths that lead to the same log message
+combination (Examples in Section 2). Engineers would need to
+manually reason about what code segments and control flows must
+have been executed (referred to as Must-Path) and what may have
+been executed (referred to as May-Path).
+Unfortunately, above analysis is usually beyond human’s manual analysis effort as it is a tedious and repetitive process, with
+each step requiring examining its constraints and also checking
+them against existing assumptions for feasibility analysis. Many
+other real world cases are much more complicated than the simple example shown here. Many logs contain hundreds and even
+thousands of messages, and each message can provide some information about what could have happened in the failed production run. Not all possible combinations are feasible, it requires a
+non-trivial, lengthy analysis to prune those infeasible ones and sort
+those “must-have-happened” and “must-not-have-happened” from
+“may-have-happened”. Such analysis results would provide engineers useful clues to narrow down the root cause. Later sections
+will show more real world failure examples that are caused by either software bugs or mis-configurations.
+Therefore, it is highly desirable to use an automated log inference engine to automatically infer from the available data (logs and
+source code) on what have happened in the failed production run
+before narrowing down the root cause. This is exactly the objective
+of this work.
+1.3 Current State of the Art
+Most existing work on log analysis focus on using logs to classify
+errors or group similar failures into the same class, or automatically
+detecting recurring failures that match to some known issues [3, 8,
+14, 27, 47]. For example, Windows Error Reporting system [22]
+and the Mozilla Quality Feedback Agent [34] automatically collect
+raw failure information (e.g. core-dumps and some heap data). It
+still relies on manual effort from the developers to inspect these
+runtime information to diagnose the error.
+So far, few work has been conducted to automatically infer from
+both logs and source code to find out what have happened during a
+failed execution.
+1.4 Our Contribution
+In this paper we present SherLog, a postmortem error diagnosis
+tool that leverages logs as starting points in source code analysis
+to automatically infer what must or may have happened during a
+failed execution.
+To be general and practical, we have the following design goals:
+• No need to re-execute the program: For practicality, our tool
+only assumes the availability of the target program’s source code
+and logs generated from failed executions. These two assumptions are quite reasonable as diagnosis are done by programmers
+themselves and it has been a common practice for customers to
+send product logs back to vendors. For example, most storage
+
+
