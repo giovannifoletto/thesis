@@ -151,19 +151,34 @@ SOC read the paper.
 
 # After Meeting
 
+TO MOVE OUT OF from the STATE OF THE ART directory.
+
 1. Intorduction to Kubernetes, Kubernetes' Audit Logs, Kubernetes Security
 	1. https://kubernetes.io/training/
 	2. https://aws.amazon.com/it/cloudtrail/
 	3. https://blog.aquasec.com/kubernetes-exposed-one-yaml-away-from-disaster
 	4. https://github.com/easttimor/aws-incident-response
 	5. https://www.sumologic.com/blog/kubernetes-logs/
-2. Introduction to Kubernetes/cluster related possible attacks, how they works and how is possible to reproduce
+2. Kubernetes Attack Surface (keyword: "kubernete attack surface", "kubernetes attack surface github")
+	1. https://www.optiv.com/insights/source-zero/blog/kubernetes-attack-surface
+	2. https://www.microsoft.com/en-us/security/blog/2020/04/02/attack-matrix-kubernetes/
+	3. https://kubebyexample.com/learning-paths/kubernetes-security/understanding-containers-attack-surface-kubernetes
+	4. https://www.cncf.io/blog/2021/11/08/kubernetes-main-attack-vectors-tree-an-explainer-guide/
+	5. https://rawcode7.medium.com/understanding-the-kubernetes-attack-surface-9a48ebcb6bc4
+	6. https://medium.com/geekculture/the-kubernetes-attack-surface-7d1f854f9d9
+	7. https://www.portainer.io/blog/kubernetes-security-minimizing-surface-attacks
+	8. https://wire19.com/kubernetes-security-understanding-attack-surface/
+	9. https://securitylabs.datadoghq.com/articles/kubehound-identify-kubernetes-attack-paths/
+	10. https://www.checkpoint.com/it/cyber-hub/cloud-security/what-is-kubernetes/kubernetes-k8s-security/
+	11. https://github.com/gg-sec/kubernetes_security_slides
+	12. 
+3. Introduction to Kubernetes/cluster related possible attacks, how they works and how is possible to reproduce
 	1. https://www.linkedin.com/pulse/top-15-common-attacks-kubernetes-vicky-budhiraja/
 	2. The state-of-the-art in container technologies: Application, orchestration and security (PDF: state_art_container_security.pdf)
 	3. KubAnomaly: Anomaly detection for the Dockerorchestration platform with neural network approaches (pdf: kubAnomaly qualcosa .pdf)
 	4. Batch and online anomaly detection for scientific applications in a Kubernetes environment (batch_kube.pdf)
 	5. Outlier Detection in Dynamic Systems with Multiple Operating Points and Application to Imporove Industrial Flares Monitoring (outlier_detection.pdf)
-3. DL/ML and application of RNN-LSTM
+4. DL/ML and application of RNN-LSTM
 	1. Toward_Explainable_Deep_Neural_Network_Based_Anomaly_Detection.pdf
 	2. Recurrent_Neural_Network_Attention_Mechanisms.pdf
 	3. A Comparative Study of Two Network-based Anomaly Detection Methods
@@ -183,8 +198,9 @@ SOC read the paper.
 	17. Analysing and alerting on application logs within Kubernetes infrastructure
 	18. Log Clustering based Problem Identification for Online Service Systems
 	19. NIPS-2010-robust-pca-via-outlier-pursuit-Paper.pdf
-4. pytorch/tensorflow
+5. pytorch/tensorflow
 
+TOOLS: CloudMapper, Security Monkey, cloudsploit
 https://github.com/autumn0409/Log-based-Anomaly-Detection-System
 
 Papers not found, maybe interesting: 
@@ -197,3 +213,5 @@ Papers not found, maybe interesting:
 Da leggere 29 papers and a github repo + kubernetes foundation + ML/DL foundation 
 + AdvProg
 + networking 2
+Che cosa cambia dei log durante l'update dell'applicazione.
+

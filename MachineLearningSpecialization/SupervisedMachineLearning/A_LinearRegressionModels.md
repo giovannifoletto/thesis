@@ -241,38 +241,3 @@ The particular thing of this algorithm is that at each step of gradient descend 
 
 There are other versions of the greater descend for linear regression and uses thing particular or other implementation of things.
 
-## Multiple Feature
-
-Make linear regression much more faster, with the use of multiple features. 
-The example of which we are working with is the same, but there are added some feature:
-- number of bedrooms
-- number of floors
-- age of home in years
-
-The value of $n$ denote the **number of feature**, where $x_j$ represents the $j^{th}$ feature. Lastly, $\vec x^{(i)}$ will be the features of $i^{th}$ training example. That means that $\vec x ^{(i)}$ represents the vector of every $i^{th}$ feature of the table.
-
-The arrow is to empathise that the symbols is a vector of values it is denoted with an arrow. 
-
-![[Pasted image 20231108172102.png]]
-
-The model with that becomes:
-$$
-f_{w, b}(x) = w_1x_1 + w_2x_2 + w_3x_3 + w_4x_4 + b
-$$
-That means that every feature could be modified by different values and attributes, as described in the table.
-If the model has $n$ feature, the model will looks like:
-$$
-f_{w, b} (x) = w_1x_1 + w_2x_2 + ... + w_nx_n + b 
-$$
-That means that can be rewrite as:
-$$
-\vec w = [w_1 \space w_2 \space w_3 \space ... \space w_1]
-$$
-$$
-b \space \text{is a number}
-$$
-$$
-\vec x = [x_1 \space x_2 \space x_3 \space ... \space x_n]
-$$
-and it is a vector of the $x$.
-
