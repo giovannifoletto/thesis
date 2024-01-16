@@ -1,3 +1,5 @@
 drain3
 numpy
 scikit-learn
+regex
+tqdm

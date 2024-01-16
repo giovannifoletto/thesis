@@ -57,6 +57,7 @@ def feature_extraction(files=costants.FLAWS_CLOUDTRAILS_FILES):
                 #corpus.append(res)
                 csv_file.write(res + "\n")
     csv_file.close()
+    return FeatureLog
 
 # in order to restore this function is necessary to add unique_keys and corpus
 # array in the function statement

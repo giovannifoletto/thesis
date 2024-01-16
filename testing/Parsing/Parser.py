@@ -61,4 +61,12 @@ class Parser:
                 record += "None" + self.DELIMETER
         # in this case discard other information => not good
         return record
+    
+    def return_only_first_level(self) -> [str]:
+        results = []
+        for k, el in enumerate(self.keys):
+            if len(el.split(".")) == 1:
+                results.append(el)
+
+        return results 
         
