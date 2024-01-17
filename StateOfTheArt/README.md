@@ -144,11 +144,6 @@ find /path -name '*.pdf' -exec sh -c 'pdftotext "{}" - | grep --with-filename --
 ```
 
 
-## TODO TODAY:
-
-considerations
-SOC read the paper.
-
 # After Meeting
 
 TO MOVE OUT OF from the STATE OF THE ART directory.
@@ -201,6 +196,7 @@ TO MOVE OUT OF from the STATE OF THE ART directory.
 5. pytorch/tensorflow
 
 TOOLS: CloudMapper, Security Monkey, cloudsploit
+
 https://github.com/autumn0409/Log-based-Anomaly-Detection-System
 
 Papers not found, maybe interesting: 
@@ -210,8 +206,74 @@ Papers not found, maybe interesting:
 4. https://link.springer.com/chapter/10.1007/978-3-031-28790-9_2
 5. https://link.springer.com/chapter/10.1007/978-1-4842-5458-5_8
 
-Da leggere 29 papers and a github repo + kubernetes foundation + ML/DL foundation 
-+ AdvProg
-+ networking 2
-Che cosa cambia dei log durante l'update dell'applicazione.
+https://medium.com/pythoneers/vectorization-in-python-an-alternative-to-python-loops-2728d6d7cd3e
+
+https://www.diva-portal.org/smash/get/diva2:1523606/FULLTEXT01.pdf
+https://arxiv.org/pdf/1811.03509.pdf
+https://github.com/logpai/logparser
+http://jiemingzhu.github.io/pub/pjhe_icws2017.pdf
+https://github.com/wuyifan18/DeepLog
+
+# Log Anomaly PoC
+
+https://github.com/V0id01/LogAnomalyDetection/tree/main
+https://github.com/alexjamesmx/Deeplog-and-loganomaly
+
+-> need to translate logs in something more usable than a json => use raw json as a method.
+-> find something like embedding directly json elements
+-> normalise json data => DONE
+-> embedding in JSON or in plain text
+https://community.openai.com/t/help-with-determining-if-its-less-efficient-to-create-embeddings-based-on-json/264617
+-> templating already done with json and druid
+-> templating with `Spell` not really working
+-> pytorch implementation, i cannot make it run somewhere correctly
+
+-> implementing Spell and Drain with these methods: `train_vocabulary` (elaborate all logs and create a vocabulary of templates), `template_inference` (return the vocabulary id/data given a new log as an input). 
+The command line could be something like `./main.py --mode vocabulary --tech "spell/drain" --input-files/--input-dir`. The components could be:
+1. serialization/deserialization of the vocabulary to/from a dile
+2. input from file and/or dir
+3. tech verbs maybe should be another more correct verb
+
+Make spell works. It's important to make spell works, in order to make the interface really real-time, in fact, Spell works with data streams.
+https://logparser.readthedocs.io/en/latest/tools/Spell.html
+-> problem 1: make more template that actually necessary, or making less (=> more errors than expected).
+-> problem 2: Spell implementation uses Dataframe under the hood, but the CSV parsed as I have done cannot be interpreted by them.
+-> LCS solo sui campi del JSON, in modo che ci sia un vocabolario di content, invece che di log. come dare un unica etichetta come input al modello.
+
+
+, and something like `./main.py --mode retrieve_vocabulary --tech "spell/drain" --vocabulary_to_file --input=` 
+Given a new log as an input, return the id of that, or `None` if there is not. The command API is literally similar to the first, except for the input part that has to change.
+
+-> concept: finding all anomalies, only cluster related anomaly, only application anomaly
+-> what attack surface's type covers the flaws logs?
+-> necessity to create a new model elaborating on a cluster-correct state of action, in order to elaborate other further anomaly. In that case, elaborating only on attack surface, we could end up in the first case of risk in this anomaly detection application (when the attack used is not in the used model elaborated)
+
+Other components:
+
+-> Model Training Phase
+-> template extraction phase
+-> extraction
+
+-> Instead using templating using embeddings could works ?
+	-> the themplating techniques are using regex patterns, maybe could be better and more effient using a parser before and then read the CSV, but this can easily end up in the reign of LLM and words embeddings.
+-> how the implementation of `DeepLog`, `LogAnomaly` and the other works and how to create a new model that is a mix of them.
+
+-> Possibility of real-life testing (like using a honeypot) 
+
+-> Latest works on log comprehension using LLM could be useful and implemented correctly in a context like this, maybe
+
+-> See the steaks on perplexityAI with some useful information and tools and explanations.
+
+-> optimize the search of template log using matrix: on row the id sorted numerically, and then pass every row to find the correct spot. => downside, we need reshape the matrix everu time another datatype arrive with more data.
+
+
+## Key Point
+
+-> the model is crap, introducing logBERT maybe
+-> the data: how to ingest data for training, testing, and modelling answers
+-> parsing and templeting logs: Spell, Drain, LLM, Sputo.
+
+-> changing data intake and outtake (with kubernetes audit log configuration), 
+
+Results in different things. LogAnomaly.
 
