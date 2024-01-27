@@ -1,5 +1,6 @@
 drain3
 numpy
 scikit-learn
-regex
+regex==2022.3.2
 tqdm
+torch
