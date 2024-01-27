@@ -1,0 +1,3 @@
+[submodule "testing/logparser"]
+	path = testing/logparser
+	url = git@github.com:logpai/logparser.git
